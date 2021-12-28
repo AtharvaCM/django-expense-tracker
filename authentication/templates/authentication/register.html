@@ -14,22 +14,33 @@
                 </div>
 
                 <form action="" method="POST">
+                    {% csrf_token %}
+                    {% include 'base/partials/_messages.html' %}
+
+                    <div class="invalid-feedback" id="usernameFeedback" style="display:none">
+                        <p></p>
+                    </div>
+                    <p class="text-sm text-success" id="usernameSuccess"></p>
                     <div class="mb-3">
                         <input type="text" name="username" id="usernameField" placeholder="Username"
                             class="form-control form-control-sm">
                     </div>
-                    <div class="invalid-feedback" style="display:none">
+
+                    <div class="invalid-feedback" id="emailFeedback" style="display:none">
                         <p></p>
                     </div>
+                    <p class="text-sm text-success" id="emailSuccess"></p>
                     <div class="mb-3">
                         <input type="email" name="email" id="emailField" placeholder="Email"
                             class="form-control form-control-sm" />
                     </div>
+
                     <div class="mb-3">
-                        <input type="password" name="password" id="passwordField"
+                        <input type="password" name="password" id="passwordField" placeholder="Password"
                             class="form-control form-control-sm" />
-                        <div class="float-end pt-2">View Password</div>
+                        <div class="float-end pt-2 showPasswordToggle">View Password</div>
                     </div>
+
                     <div class="d-grid mt-5">
                         <input type="submit" value="Register" class="btn btn-primary btn-block" />
                     </div>
