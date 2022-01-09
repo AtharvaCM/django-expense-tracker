@@ -23,7 +23,7 @@
                     <p class="text-sm text-success" id="usernameSuccess"></p>
                     <div class="mb-3">
                         <input type="text" name="username" id="usernameField" placeholder="Username"
-                            class="form-control form-control-sm">
+                            class="form-control form-control-sm" value="{{ fieldValues.username }}">
                     </div>
 
                     <div class="invalid-feedback" id="emailFeedback" style="display:none">
@@ -32,7 +32,7 @@
                     <p class="text-sm text-success" id="emailSuccess"></p>
                     <div class="mb-3">
                         <input type="email" name="email" id="emailField" placeholder="Email"
-                            class="form-control form-control-sm" />
+                            class="form-control form-control-sm" value="{{ fieldValues.email }}" />
                     </div>
 
                     <div class="mb-3">
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="d-grid mt-5">
-                        <input type="submit" value="Register" class="btn btn-primary btn-block" />
+                        <input type="submit" value="Register" class="btn btn-primary btn-block submit-btn" />
                     </div>
                 </form>
             </div>
