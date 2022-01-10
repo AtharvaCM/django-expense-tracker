@@ -6,6 +6,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib import auth
 
 from validate_email import validate_email
 from django.core.mail import EmailMessage
@@ -111,9 +112,11 @@ class VerificationView(View):
             user = User.objects.get(pk=id)
 
             if not token_generator.check_token(user, token):
-                return redirect('login'+'?message='+'Account is already activated')
+                messages.success(request, 'Account is already activated')
+                return redirect('login')
 
             if user.is_active:
+                messages.success(request, 'Account is already activated')
                 return redirect('login')
 
             user.is_active = True
@@ -128,7 +131,36 @@ class VerificationView(View):
 
 
 class LoginView(View):
-    def get(self, request, uidb64, token):
-        template_name = 'authentication/login.html'
+    template_name = 'authentication/login.html'
+
+    def get(self, request):
         context = {}
-        return render(request, template_name, context)
+
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        context = {}
+
+        if username and password:
+            user = auth.authenticate(username=username, password=password)
+
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    messages.success(request, 'Welcome ' +
+                                     user.username+' You are now logged in.')
+                    return redirect('index')
+
+                messages.error(
+                    request, 'Account is not active, please check your email!')
+                return render(request, self.template_name, context)
+
+            messages.error(
+                request, 'Invalid credentials, try again!')
+            return render(request, self.template_name, context)
+
+        messages.error(
+            request, 'Please fill all the fields!')
+        return render(request, self.template_name, context)
